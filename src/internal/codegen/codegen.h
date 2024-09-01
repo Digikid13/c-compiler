@@ -1,6 +1,6 @@
 // Copyright 2024 Justin Cruz
-#ifndef C_COMPILER_SRC_CODEGEN_H_
-#define C_COMPILER_SRC_CODEGEN_H_
+#ifndef C_COMPILER_SRC_INTERNAL_CODEGEN_CODEGEN_H_
+#define C_COMPILER_SRC_INTERNAL_CODEGEN_CODEGEN_H_
 
 #include <stdlib.h>
 
@@ -14,7 +14,7 @@ namespace codegen {
 struct Identifier {
   std::string value;
 
-  Identifier(std::string v) : value(v) {}
+  explicit Identifier(std::string v) : value(v) {}
 
   std::string to_string() { return "Identifier { value: " + value + " }"; }
 };
@@ -22,7 +22,7 @@ struct Identifier {
 struct ImmediateOperand {
   int value;
 
-  ImmediateOperand(int v) : value(v) {}
+  explicit ImmediateOperand(int v) : value(v) {}
 
   std::string to_string() {
     return "ImmediateOperand { value : " + std::to_string(value) + " }";
@@ -33,7 +33,7 @@ struct RegisterOperand {
   std::string reg = "eax";
 
   RegisterOperand() : reg("eax") {}
-  RegisterOperand(std::string r) : reg(r) {}
+  explicit RegisterOperand(std::string r) : reg(r) {}
 
   std::string to_string() { return "ImmediateOperand { value : " + reg + " }"; }
 };
@@ -70,7 +70,7 @@ struct Function {
 struct Program {
   Function function;
 
-  Program(Function f) : function(f) {}
+  explicit Program(Function f) : function(f) {}
 
   std::string to_string() {
     return "Program {\n  " + function.to_string() + "\n}\n";
@@ -84,4 +84,4 @@ Function ParseFunction(parser::Function parser_function);
 Program ParseProgram(parser::Program parser_program);
 }  // namespace codegen
 
-#endif  // C_COMPILER_SRC_CODEGEN_H_
+#endif  // C_COMPILER_SRC_INTERNAL_CODEGEN_CODEGEN_H_

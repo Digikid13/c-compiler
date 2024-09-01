@@ -1,6 +1,6 @@
 // Copyright 2024 Justin Cruz
-#ifndef C_COMPILER_SRC_ASSEMBLER_H_
-#define C_COMPILER_SRC_ASSEMBLER_H_
+#ifndef C_COMPILER_SRC_INTERNAL_ASSEMBLER_ASSEMBLER_H_
+#define C_COMPILER_SRC_INTERNAL_ASSEMBLER_ASSEMBLER_H_
 
 #include <stdlib.h>
 
@@ -18,4 +18,4 @@ std::string ParseFunction(codegen::Function codegen_function);
 std::string ParseProgram(codegen::Program codegen_program);
 }  // namespace assembler
 
-#endif  // C_COMPILER_SRC_ASSEMBLER_H_
+#endif  // C_COMPILER_SRC_INTERNAL_ASSEMBLER_ASSEMBLER_H_

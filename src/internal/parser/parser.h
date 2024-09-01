@@ -1,6 +1,6 @@
 // Copyright 2024 Justin Cruz
-#ifndef C_COMPILER_SRC_PARSER_H_
-#define C_COMPILER_SRC_PARSER_H_
+#ifndef C_COMPILER_SRC_INTERNAL_PARSER_PARSER_H_
+#define C_COMPILER_SRC_INTERNAL_PARSER_PARSER_H_
 
 #include <stdlib.h>
 
@@ -14,7 +14,7 @@ namespace parser {
 struct Identifier {
   std::string value;
 
-  Identifier(std::string v) : value(v) {}
+  explicit Identifier(std::string v) : value(v) {}
 
   std::string to_string() { return "Identifier { value: " + value + " }"; }
 };
@@ -22,7 +22,7 @@ struct Identifier {
 struct Constant {
   std::string value;
 
-  Constant(std::string v) : value(v) {}
+  explicit Constant(std::string v) : value(v) {}
 
   std::string to_string() { return "Constant { value: " + value + " }"; }
 };
@@ -60,7 +60,7 @@ struct Expression {
 struct Statement {
   Expression expression;
 
-  Statement(Expression e) : expression(e) {}
+  explicit Statement(Expression e) : expression(e) {}
 
   std::string to_string() {
     return "Statement {\n      expression: " + expression.to_string() +
@@ -84,7 +84,7 @@ struct Function {
 struct Program {
   Function function;
 
-  Program(Function f) : function(f) {}
+  explicit Program(Function f) : function(f) {}
 
   std::string to_string() {
     return "Program {\n  " + function.to_string() + "\n}\n";
@@ -103,4 +103,4 @@ Function ParseFunction(std::deque<lexer::Token>* token_list);
 Program ParseProgram(std::deque<lexer::Token>* token_list);
 }  // namespace parser
 
-#endif  // C_COMPILER_SRC_PARSER_H_
+#endif  // C_COMPILER_SRC_INTERNAL_PARSER_PARSER_H_
