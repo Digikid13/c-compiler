@@ -13,22 +13,27 @@
 #include "src/internal/lexer/lexer.h"
 #include "src/internal/parser/parser.h"
 
-namespace file_utils {
+namespace utils {
 bool IsValidFilename(const std::string& file_name) {
   return file_name.substr(file_name.length() - 2) == ".c";
 }
-}  // namespace file_utils
+
+void PrintHelpMessage() {
+  std::cerr << "Usage: compiler "
+            << "[--lex|--parse|--codegen|--assembly] <file_name>\n";
+  std::cerr << "  --assembly "
+            << "Output the assembly \".s\" file without building binary.\n";
+  std::cerr << "  --codegen  "
+            << "Run the lexer, parser, and assembly generation.\n";
+  std::cerr << "  --help     " << "Print this message.\n";
+  std::cerr << "  --lex      " << "Run only the lexer.\n";
+  std::cerr << "  --parse    " << "Run the lexer and parser.\n";
+}
+}  // namespace utils
 
 int main(int argc, char* argv[]) {
   if (argc < 2 || argc > 3 || (argc == 3 && argv[1][0] != '-')) {
-    std::cerr << "Usage: " << argv[0]
-              << " [--lex|--parse|--codegen] <file_name>\n";
-    std::cerr << "  --lex " << " Run only the lexer\n";
-    std::cerr << "  --parse " << " Run the lexer and parser\n";
-    std::cerr << "  --codegen "
-              << " Run the lexer, parser, and assembly generation \n";
-    std::cerr << "  --assembly "
-              << " Output the assembly \".s\" file without building binary\n";
+    utils::PrintHelpMessage();
     return 1;
   }
 
@@ -42,7 +47,12 @@ int main(int argc, char* argv[]) {
     source_file_name = argv[2];
   }
 
-  if (!file_utils::IsValidFilename(source_file_name)) {
+  if (flag == "--help") {
+    utils::PrintHelpMessage();
+    return 0;
+  }
+
+  if (!utils::IsValidFilename(source_file_name)) {
     std::cerr << "File name is not valid: " << source_file_name
               << " should end in *.c\n";
     return 1;
