@@ -1,0 +1,6 @@
+bazel-bin
+bazel-c-compiler
+bazel-genfiles
+bazel-out
+bazel-testlogs
+MODULE.bazel.lock
