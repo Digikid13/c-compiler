@@ -2,6 +2,6 @@ Just a crappy WIP of a C compiler written in C++. My goal is to learn C++ while 
 
 Build:
 `bazel build //src:compiler`
-git 
+
 Run:
 `bazel-bin/src/compiler [--lex|--parse|--codegen] <file_name>`
