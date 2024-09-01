@@ -4,3 +4,6 @@ bazel-genfiles
 bazel-out
 bazel-testlogs
 MODULE.bazel.lock
+
+/test_files/return_2
+/test_files/return_2.s

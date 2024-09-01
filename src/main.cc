@@ -27,6 +27,8 @@ int main(int argc, char* argv[]) {
     std::cerr << "  --parse " << " Run the lexer and parser\n";
     std::cerr << "  --codegen "
               << " Run the lexer, parser, and assembly generation \n";
+    std::cerr << "  --assembly "
+              << " Output the assembly \".s\" file without building binary\n";
     return 1;
   }
 
@@ -49,7 +51,7 @@ int main(int argc, char* argv[]) {
   std::ifstream source_file(source_file_name.c_str());
 
   if (!source_file) {
-    std::cerr << "Failed to load file: " << source_file_name;
+    std::cerr << "Failed to load file: " << source_file_name << "\n";
     return 1;
   }
 
@@ -72,7 +74,7 @@ int main(int argc, char* argv[]) {
   std::ifstream preprocessed_file(preprocessed_file_name.c_str());
 
   if (!preprocessed_file) {
-    std::cerr << "Failed to load file: " << preprocessed_file_name;
+    std::cerr << "Failed to load file: " << preprocessed_file_name << "\n";
     return 1;
   }
 
@@ -110,14 +112,20 @@ int main(int argc, char* argv[]) {
   assembly_out << assembler::ParseProgram(codegen_program);
   assembly_out.close();
 
+  if (flag == "--assembly") {
+    std::cout << "Genrated assembly file: " + assembly_file << "\n";
+    return 0;
+  }
+
   std::string assembler_cmd = "gcc " + assembly_file + " -o " + file_prefix;
 
   int assembler_ret = system(assembler_cmd.c_str());
   std::remove(assembly_file.c_str());
 
   if (assembler_ret != 0) {
-    std::cerr << "Something went wrong assembling the binary " << assembly_file
+    std::cerr << "Something went wrong assembling the binary " << file_prefix
               << "\n";
+    return 1;
   }
 
   std::cout << "Completed compiling: " << source_file_name << "\n";
