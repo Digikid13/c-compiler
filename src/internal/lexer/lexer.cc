@@ -71,16 +71,16 @@ std::deque<Token> ParseSourceFile(std::ifstream& source_file) {
       OpenBraceSearch, ClosedBraceSearch, SemicolonSearch,
   };
 
-  std::string identifier_match;
-  std::string word_like_match;
-  std::string non_word_like_match;
-
   std::string source_line;
   std::deque<Token> token_list;
   int line_count = 1;
   while (std::getline(source_file, source_line)) {
     int line_length = source_line.length();
     while (source_line.length() > 0) {
+      std::string identifier_match;
+      std::string word_like_match;
+      std::string non_word_like_match;
+
       source_line.erase(0, source_line.find_first_not_of(" \t\n\r\f\v"));
 
       if (re2::RE2::PartialMatch(source_line, IdentifierSearch.regex, &identifier_match)) {
@@ -94,7 +94,7 @@ std::deque<Token> ParseSourceFile(std::ifstream& source_file) {
           }
         }
 
-        if (identifier_match != word_like_match) {
+        if (word_like_match.length() == 0) {
           token_list.push_back(Token(IdentifierSearch.type, identifier_match));
           source_line = source_line.substr(identifier_match.length());
         }
