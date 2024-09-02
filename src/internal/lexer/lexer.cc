@@ -14,28 +14,37 @@
 namespace lexer {
 std::string Token::to_string() {
   switch (type) {
+    // Word-like Tokens
     case TokenType::Identifier:
       return "[IDENTIFIER=" + value + "]";
-    case TokenType::Constant:
-      return "[CONSTANT=" + value + "]";
     case TokenType::Int:
       return "[INT]";
-    case TokenType::Void:
-      return "[VOID]";
     case TokenType::Return:
       return "[RETURN]";
-    case TokenType::OpenParen:
-      return "[OPEN_PAREN]";
-    case TokenType::ClosedParen:
-      return "[CLOSED_PAREN]";
+    case TokenType::Void:
+      return "[VOID]";
+
+    // Non-word-like Tokens
     case TokenType::OpenBrace:
       return "[OPEN_BRACE]";
     case TokenType::ClosedBrace:
       return "[CLOSED_BRACE]";
+    case TokenType::Bitwise:
+      return "[BITWISE]";
+    case TokenType::Constant:
+      return "[CONSTANT=" + value + "]";
+    case TokenType::Decrement:
+      return "[DECREMENT]";
+    case TokenType::Negation:
+      return "[NEGATION]";
+    case TokenType::OpenParen:
+      return "[OPEN_PAREN]";
+    case TokenType::ClosedParen:
+      return "[CLOSED_PAREN]";
     case TokenType::Semicolon:
       return "[SEMICOLON]";
     default:
-      return "[INVALID]";
+      return "[MISSING_CONVERSION_STRING]";
   }
 }
 
@@ -53,22 +62,32 @@ std::deque<Token> ParseSourceFile(std::ifstream& source_file) {
   Search ReturnSearch = Search("^(return\\b)", TokenType::Return);
   Search VoidSearch = Search("^(void\\b)", TokenType::Void);
 
-  Search ConstantSearch = Search("^([0-9]+\\b)", TokenType::Constant);
-  Search OpenParenSearch = Search("^(\\()", TokenType::OpenParen);
-  Search ClosedParenSearch = Search("^(\\))", TokenType::ClosedParen);
-  Search OpenBraceSearch = Search("^({)", TokenType::OpenBrace);
-  Search ClosedBraceSearch = Search("^(})", TokenType::ClosedBrace);
-  Search SemicolonSearch = Search("^(;)", TokenType::Semicolon);
-
   std::vector<Search> word_like_search = {
       IntSearch,
       VoidSearch,
       ReturnSearch,
   };
 
+  Search OpenBraceSearch = Search("^({)", TokenType::OpenBrace);
+  Search ClosedBraceSearch = Search("^(})", TokenType::ClosedBrace);
+  Search BitwiseSearch = Search("^(~)", TokenType::Bitwise);
+  Search ConstantSearch = Search("^([0-9]+\\b)", TokenType::Constant);
+  Search DecrementSearch = Search("^(--)", TokenType::Decrement);
+  Search NegationSearch = Search("^(-)[^-]", TokenType::Negation);
+  Search OpenParenSearch = Search("^(\\()", TokenType::OpenParen);
+  Search ClosedParenSearch = Search("^(\\))", TokenType::ClosedParen);
+  Search SemicolonSearch = Search("^(;)", TokenType::Semicolon);
+
   std::vector<Search> non_word_like_search = {
-      ConstantSearch,  OpenParenSearch,   ClosedParenSearch,
-      OpenBraceSearch, ClosedBraceSearch, SemicolonSearch,
+      OpenBraceSearch,
+      ClosedBraceSearch,
+      BitwiseSearch,
+      ConstantSearch,
+      DecrementSearch,
+      NegationSearch,
+      OpenParenSearch,
+      ClosedParenSearch,
+      SemicolonSearch,
   };
 
   std::string source_line;

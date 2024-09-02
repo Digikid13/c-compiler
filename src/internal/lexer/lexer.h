@@ -13,15 +13,21 @@
 
 namespace lexer {
 enum class TokenType {
+  // Word-like Tokens
   Identifier,
-  Constant,
   Int,
-  Void,
   Return,
-  OpenParen,
-  ClosedParen,
+  Void,
+
+  // Non-word-like Tokens
   OpenBrace,
   ClosedBrace,
+  Bitwise,
+  Constant,
+  Decrement,
+  Negation,
+  OpenParen,
+  ClosedParen,
   Semicolon
 };
 
