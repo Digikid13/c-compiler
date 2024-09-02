@@ -7,10 +7,12 @@
 #include <deque>
 #include <fstream>
 #include <string>
+#include <vector>
+
+#include "re2/re2.h"
 
 namespace lexer {
 enum class TokenType {
-  Invalid,
   Identifier,
   Constant,
   Int,
@@ -21,6 +23,13 @@ enum class TokenType {
   OpenBrace,
   ClosedBrace,
   Semicolon
+};
+
+struct Search {
+  std::string regex;
+  TokenType type;
+
+  Search(std::string r, TokenType t) : regex(r), type(t) {}
 };
 
 struct Token {

@@ -53,8 +53,7 @@ int main(int argc, char* argv[]) {
   }
 
   if (!utils::IsValidFilename(source_file_name)) {
-    std::cerr << "File name is not valid: " << source_file_name
-              << " should end in *.c\n";
+    std::cerr << "File name is not valid: " << source_file_name << " should end in *.c\n";
     return 1;
   }
 
@@ -67,18 +66,15 @@ int main(int argc, char* argv[]) {
 
   source_file.close();
 
-  std::string file_prefix =
-      source_file_name.substr(0, source_file_name.length() - 2);
+  std::string file_prefix = source_file_name.substr(0, source_file_name.length() - 2);
   std::string preprocessed_file_name = file_prefix + ".i";
-  std::string preprocess_cmd =
-      "gcc -E -P " + source_file_name + " -o " + preprocessed_file_name;
+  std::string preprocess_cmd = "gcc -E -P " + source_file_name + " -o " + preprocessed_file_name;
   // std::cout << preprocess_cmd << "\n";
 
   int preprocess_ret = system(preprocess_cmd.c_str());
 
   if (preprocess_ret != 0) {
-    std::cerr << "Something went wrong preprocessing the file "
-              << source_file_name << "\n";
+    std::cerr << "Something went wrong preprocessing the file " << source_file_name << "\n";
   }
 
   std::ifstream preprocessed_file(preprocessed_file_name.c_str());
@@ -117,8 +113,7 @@ int main(int argc, char* argv[]) {
   codegen::Program codegen_program = codegen::ParseProgram(parser_program);
 
   std::string assembly_file = file_prefix + ".s";
-  std::ofstream assembly_out(assembly_file.c_str(),
-                             std::ofstream::out | std::ofstream::trunc);
+  std::ofstream assembly_out(assembly_file.c_str(), std::ofstream::out | std::ofstream::trunc);
   assembly_out << assembler::ParseProgram(codegen_program);
   assembly_out.close();
 
@@ -133,8 +128,7 @@ int main(int argc, char* argv[]) {
   std::remove(assembly_file.c_str());
 
   if (assembler_ret != 0) {
-    std::cerr << "Something went wrong assembling the binary " << file_prefix
-              << "\n";
+    std::cerr << "Something went wrong assembling the binary " << file_prefix << "\n";
     return 1;
   }
 
