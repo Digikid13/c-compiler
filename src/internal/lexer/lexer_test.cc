@@ -18,7 +18,7 @@ TEST(LexerTest, ValidateTokens) {
   // Non-word-like Tokens
   lexer::Token open_brace_token(lexer::TokenType::OpenBrace);
   lexer::Token closed_brace_token(lexer::TokenType::ClosedBrace);
-  lexer::Token bitwise_token(lexer::TokenType::Bitwise);
+  lexer::Token compliment_token(lexer::TokenType::Compliment);
   lexer::Token constant_token(lexer::TokenType::Constant, "42");
   lexer::Token decrement_token(lexer::TokenType::Decrement);
   lexer::Token negation_token(lexer::TokenType::Negation);
@@ -28,7 +28,7 @@ TEST(LexerTest, ValidateTokens) {
 
   EXPECT_EQ(open_brace_token.to_string(), "[OPEN_BRACE]");
   EXPECT_EQ(closed_brace_token.to_string(), "[CLOSED_BRACE]");
-  EXPECT_EQ(bitwise_token.to_string(), "[BITWISE]");
+  EXPECT_EQ(compliment_token.to_string(), "[COMPLIMENT]");
   EXPECT_EQ(constant_token.to_string(), "[CONSTANT=42]");
   EXPECT_EQ(decrement_token.to_string(), "[DECREMENT]");
   EXPECT_EQ(negation_token.to_string(), "[NEGATION]");
