@@ -1,0 +1,12 @@
+{
+  "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, ColumnLimit: 100 }",
+  "C_Cpp.default.compilerPath": "/usr/bin/g++",
+  "C_Cpp.errorSquiggles": "enabled",
+  "files.associations": {
+    "ostream": "cpp",
+    "string_view": "cpp",
+    "*.tcc": "cpp",
+    "regex": "cpp",
+    "iosfwd": "cpp"
+  }
+}
