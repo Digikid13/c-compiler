@@ -49,11 +49,11 @@ struct Expression {
     }
 
     std::string value_string;
-    if (auto* constant = std::get_if<Constant>(&value)) {
+    if (Constant* constant = std::get_if<Constant>(&value)) {
       value_string = constant->to_string();
     }
-    return "Expression {\n        type: " + type_string +
-           "\n        value: " + value_string + "\n      }";
+    return "Expression {\n        type: " + type_string + "\n        value: " + value_string +
+           "\n      }";
   }
 };
 
@@ -63,8 +63,7 @@ struct Statement {
   explicit Statement(Expression e) : expression(e) {}
 
   std::string to_string() {
-    return "Statement {\n      expression: " + expression.to_string() +
-           "\n    }";
+    return "Statement {\n      expression: " + expression.to_string() + "\n    }";
   }
 };
 
@@ -86,13 +85,10 @@ struct Program {
 
   explicit Program(Function f) : function(f) {}
 
-  std::string to_string() {
-    return "Program {\n  " + function.to_string() + "\n}\n";
-  }
+  std::string to_string() { return "Program {\n  " + function.to_string() + "\n}\n"; }
 };
 
-void ExpectToken(lexer::Token token, lexer::TokenType token_type,
-                 std::string expected);
+void ExpectToken(lexer::Token token, lexer::TokenType token_type, std::string expected);
 
 Expression ParseExpression(std::deque<lexer::Token>* token_list);
 

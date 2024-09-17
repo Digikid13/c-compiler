@@ -11,8 +11,7 @@
 
 namespace assembler {
 std::string ParseOperand(codegen::Operand operand) {
-  if (codegen::ImmediateOperand* imm_operand =
-          std::get_if<codegen::ImmediateOperand>(&operand)) {
+  if (codegen::ImmediateOperand* imm_operand = std::get_if<codegen::ImmediateOperand>(&operand)) {
     return "$" + std::to_string(imm_operand->value);
   } else if (codegen::RegisterOperand* reg_operand =
                  std::get_if<codegen::RegisterOperand>(&operand)) {
@@ -23,8 +22,7 @@ std::string ParseOperand(codegen::Operand operand) {
 }
 
 std::string ParseInstruction(codegen::Instruction instruction) {
-  if (codegen::MovInstruction* mov_instruct =
-          std::get_if<codegen::MovInstruction>(&instruction)) {
+  if (codegen::MovInstruction* mov_instruct = std::get_if<codegen::MovInstruction>(&instruction)) {
     return "  movl " + ParseOperand(mov_instruct->source) + ", " +
            ParseOperand(mov_instruct->destination) + "\n";
   } else if (codegen::RetInstruction* ret_instruct =
@@ -39,7 +37,7 @@ std::string ParseFunction(codegen::Function codegen_function) {
   std::string fn_name = codegen_function.identifier.value;
   std::string fn_output = "    .globl " + fn_name + "\n";
   fn_output += fn_name + ":\n";
-  for (auto& instruction : codegen_function.instructions) {
+  for (codegen::Instruction& instruction : codegen_function.instructions) {
     fn_output += ParseInstruction(instruction);
   }
 

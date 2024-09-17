@@ -24,9 +24,7 @@ struct ImmediateOperand {
 
   explicit ImmediateOperand(int v) : value(v) {}
 
-  std::string to_string() {
-    return "ImmediateOperand { value : " + std::to_string(value) + " }";
-  }
+  std::string to_string() { return "ImmediateOperand { value : " + std::to_string(value) + " }"; }
 };
 
 struct RegisterOperand {
@@ -56,8 +54,7 @@ struct Function {
   Identifier identifier;
   std::deque<Instruction> instructions;
 
-  Function(Identifier id, std::deque<Instruction> in)
-      : identifier(id), instructions(in) {}
+  Function(Identifier id, std::deque<Instruction> in) : identifier(id), instructions(in) {}
 
   std::string to_string() {
     return "Function {\n    identifier: " +
@@ -72,9 +69,7 @@ struct Program {
 
   explicit Program(Function f) : function(f) {}
 
-  std::string to_string() {
-    return "Program {\n  " + function.to_string() + "\n}\n";
-  }
+  std::string to_string() { return "Program {\n  " + function.to_string() + "\n}\n"; }
 };
 
 std::deque<Instruction> ParseInstructions(parser::Statement parser_statement);

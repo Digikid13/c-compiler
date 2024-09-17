@@ -1,4 +1,5 @@
 module(name = "c-compiler", version = "0.1")
 
 bazel_dep(name = "abseil-cpp", version = "20240116.2", repo_name="abseil-cpp")
+bazel_dep(name = "googletest", version = "1.15.2")
 bazel_dep(name = "re2", version = "2024-07-02", repo_name="re2")

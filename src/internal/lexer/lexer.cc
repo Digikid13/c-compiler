@@ -49,7 +49,7 @@ std::string Token::to_string() {
 }
 
 void PrintTokens(std::deque<Token>* token_list) {
-  for (auto& token : (*token_list)) {
+  for (Token& token : (*token_list)) {
     std::cout << token.to_string();
   }
 
@@ -79,15 +79,8 @@ std::deque<Token> ParseSourceFile(std::ifstream& source_file) {
   Search SemicolonSearch = Search("^(;)", TokenType::Semicolon);
 
   std::vector<Search> non_word_like_search = {
-      OpenBraceSearch,
-      ClosedBraceSearch,
-      BitwiseSearch,
-      ConstantSearch,
-      DecrementSearch,
-      NegationSearch,
-      OpenParenSearch,
-      ClosedParenSearch,
-      SemicolonSearch,
+      OpenBraceSearch, ClosedBraceSearch, BitwiseSearch,     ConstantSearch,  DecrementSearch,
+      NegationSearch,  OpenParenSearch,   ClosedParenSearch, SemicolonSearch,
   };
 
   std::string source_line;
@@ -103,7 +96,7 @@ std::deque<Token> ParseSourceFile(std::ifstream& source_file) {
       source_line.erase(0, source_line.find_first_not_of(" \t\n\r\f\v"));
 
       if (re2::RE2::PartialMatch(source_line, IdentifierSearch.regex, &identifier_match)) {
-        for (auto& word_like : word_like_search) {
+        for (Search& word_like : word_like_search) {
           if (re2::RE2::PartialMatch(source_line, word_like.regex, &word_like_match)) {
             if (identifier_match == word_like_match) {
               token_list.push_back(Token(word_like.type, word_like_match));
@@ -118,7 +111,7 @@ std::deque<Token> ParseSourceFile(std::ifstream& source_file) {
           source_line = source_line.substr(identifier_match.length());
         }
       } else {
-        for (auto& non_word_like : non_word_like_search) {
+        for (Search& non_word_like : non_word_like_search) {
           if (re2::RE2::PartialMatch(source_line, non_word_like.regex, &non_word_like_match)) {
             token_list.push_back(Token(non_word_like.type, non_word_like_match));
             source_line = source_line.substr(non_word_like_match.length());
