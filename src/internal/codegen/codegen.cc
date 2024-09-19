@@ -1,5 +1,5 @@
 // Copyright 2024 Justin Cruz
-#include "codegen.h"
+#include "src/internal/codegen/codegen.h"
 
 #include <stdlib.h>
 
@@ -12,9 +12,9 @@
 namespace codegen {
 std::deque<Instruction> ParseInstructions(parser::Statement parser_statement) {
   std::deque<Instruction> instruction_list;
-  if (parser_statement.expression.type == parser::ExpressionType::Return) {
+  if (std::holds_alternative<parser::ConstantExpression>(parser_statement.expression)) {
     ImmediateOperand src_operand = ImmediateOperand(
-        std::stoi(std::get<parser::Constant>(parser_statement.expression.value).value));
+        std::stoi(std::get<parser::ConstantExpression>(parser_statement.expression).value));
     RegisterOperand dest_operand = RegisterOperand();
 
     MovInstruction mov_instruct = MovInstruction(src_operand, dest_operand);

@@ -19,51 +19,52 @@ struct Identifier {
   std::string to_string() { return "Identifier { value: " + value + " }"; }
 };
 
-struct Constant {
+struct ConstantExpression {
   std::string value;
 
-  explicit Constant(std::string v) : value(v) {}
+  explicit ConstantExpression(std::string v) : value(v) {}
 
-  std::string to_string() { return "Constant { value: " + value + " }"; }
+  std::string to_string() { return "ConstantExpression { value: " + value + " }"; }
 };
 
-enum ExpressionType {
+using UnaryExpression = struct UnaryExpression;
+using Expression = std::variant<ConstantExpression, UnaryExpression>;
+
+enum class UnaryOperator {
+  Complement,
+  Negate,
+};
+
+struct UnaryExpression {
+  UnaryOperator op;
+  Expression* exp;
+
+  UnaryExpression(UnaryOperator op, Expression* e) : op(op), exp(e) {}
+
+  std::string to_string() { return "Unary Expression {}"; }
+};
+
+enum StatementType {
   Return,
 };
 
-struct Expression {
-  ExpressionType type;
-  std::variant<Constant> value;
-
-  Expression(ExpressionType t, std::variant<Constant> c) : type(t), value(c) {}
-
-  std::string to_string() {
-    std::string type_string;
-    switch (type) {
-      case ExpressionType::Return:
-        type_string = "Return";
-        break;
-      default:
-        type_string = "";
-        break;
-    }
-
-    std::string value_string;
-    if (Constant* constant = std::get_if<Constant>(&value)) {
-      value_string = constant->to_string();
-    }
-    return "Expression {\n        type: " + type_string + "\n        value: " + value_string +
-           "\n      }";
-  }
-};
-
 struct Statement {
+  StatementType type = StatementType::Return;
   Expression expression;
 
   explicit Statement(Expression e) : expression(e) {}
 
   std::string to_string() {
-    return "Statement {\n      expression: " + expression.to_string() + "\n    }";
+    if (std::holds_alternative<ConstantExpression>(expression)) {
+      return "Statement {\n      expression: " +
+             std::get<ConstantExpression>(expression).to_string() + "\n    }";
+    } else if (std::holds_alternative<UnaryExpression>(expression)) {
+      return "Statement {\n      expression: " +
+      std::get<UnaryExpression>(expression).to_string() +
+             "\n    }";
+    }
+
+    return "";
   }
 };
 
@@ -88,7 +89,8 @@ struct Program {
   std::string to_string() { return "Program {\n  " + function.to_string() + "\n}\n"; }
 };
 
-void ExpectToken(lexer::Token token, lexer::TokenType token_type, std::string expected);
+lexer::Token ExpectToken(std::deque<lexer::Token>* token_list, lexer::TokenType token_type,
+                         std::string expected);
 
 Expression ParseExpression(std::deque<lexer::Token>* token_list);
 
