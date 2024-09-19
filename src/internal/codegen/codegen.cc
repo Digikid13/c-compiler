@@ -12,9 +12,8 @@
 namespace codegen {
 std::deque<Instruction> ParseInstructions(parser::Statement parser_statement) {
   std::deque<Instruction> instruction_list;
-  if (std::holds_alternative<parser::ConstantExpression>(parser_statement.expression)) {
-    ImmediateOperand src_operand = ImmediateOperand(
-        std::stoi(std::get<parser::ConstantExpression>(parser_statement.expression).value));
+  if (auto* expression = std::get_if<parser::ConstantExpression>(&parser_statement.expression)) {
+    ImmediateOperand src_operand = ImmediateOperand(std::stoi(expression->value));
     RegisterOperand dest_operand = RegisterOperand();
 
     MovInstruction mov_instruct = MovInstruction(src_operand, dest_operand);

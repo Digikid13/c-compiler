@@ -49,7 +49,7 @@ std::string Token::to_string() {
 }
 
 void PrintTokens(std::deque<Token>* token_list) {
-  for (Token& token : (*token_list)) {
+  for (auto& token : (*token_list)) {
     std::cout << token.to_string();
   }
 

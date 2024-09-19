@@ -1,5 +1,5 @@
 // Copyright 2024 Justin Cruz
-#include "assembler.h"
+#include "src/internal/assembler/assembler.h"
 
 #include <stdlib.h>
 
@@ -11,7 +11,7 @@
 
 namespace assembler {
 std::string ParseOperand(codegen::Operand operand) {
-  if (codegen::ImmediateOperand* imm_operand = std::get_if<codegen::ImmediateOperand>(&operand)) {
+  if (auto* imm_operand = std::get_if<codegen::ImmediateOperand>(&operand)) {
     return "$" + std::to_string(imm_operand->value);
   } else if (codegen::RegisterOperand* reg_operand =
                  std::get_if<codegen::RegisterOperand>(&operand)) {
@@ -22,11 +22,10 @@ std::string ParseOperand(codegen::Operand operand) {
 }
 
 std::string ParseInstruction(codegen::Instruction instruction) {
-  if (codegen::MovInstruction* mov_instruct = std::get_if<codegen::MovInstruction>(&instruction)) {
+  if (auto* mov_instruct = std::get_if<codegen::MovInstruction>(&instruction)) {
     return "  movl " + ParseOperand(mov_instruct->source) + ", " +
            ParseOperand(mov_instruct->destination) + "\n";
-  } else if (codegen::RetInstruction* ret_instruct =
-                 std::get_if<codegen::RetInstruction>(&instruction)) {
+  } else if (std::holds_alternative<codegen::RetInstruction>(instruction)) {
     return "  ret\n";
   }
 
