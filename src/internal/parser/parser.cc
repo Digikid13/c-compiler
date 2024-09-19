@@ -22,7 +22,6 @@ lexer::Token ExpectToken(std::deque<lexer::Token>* token_list, lexer::TokenType 
 }
 
 Expression ParseExpression(std::deque<lexer::Token>* token_list) {
-  ExpectToken(token_list, lexer::TokenType::Return, "return");
   lexer::Token constant_token =
       ExpectToken(token_list, lexer::TokenType::Constant, "a constant value");
 
@@ -30,6 +29,7 @@ Expression ParseExpression(std::deque<lexer::Token>* token_list) {
 }
 
 Statement ParseStatement(std::deque<lexer::Token>* token_list) {
+  ExpectToken(token_list, lexer::TokenType::Return, "return");
   Statement statement_node = Statement(ParseExpression(token_list));
 
   ExpectToken(token_list, lexer::TokenType::Semicolon, ";");
