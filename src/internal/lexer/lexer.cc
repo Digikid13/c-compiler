@@ -29,8 +29,8 @@ std::string Token::to_string() {
       return "[OPEN_BRACE]";
     case TokenType::ClosedBrace:
       return "[CLOSED_BRACE]";
-    case TokenType::Compliment:
-      return "[COMPLIMENT]";
+    case TokenType::Complement:
+      return "[COMPLEMENT]";
     case TokenType::Constant:
       return "[CONSTANT=" + value + "]";
     case TokenType::Decrement:
@@ -70,7 +70,7 @@ std::deque<Token> ParseSourceFile(std::ifstream& source_file) {
 
   Search OpenBraceSearch = Search("^({)", TokenType::OpenBrace);
   Search ClosedBraceSearch = Search("^(})", TokenType::ClosedBrace);
-  Search ComplimentSearch = Search("^(~)", TokenType::Compliment);
+  Search ComplementSearch = Search("^(~)", TokenType::Complement);
   Search ConstantSearch = Search("^([0-9]+\\b)", TokenType::Constant);
   Search DecrementSearch = Search("^(--)", TokenType::Decrement);
   Search NegationSearch = Search("^(-)[^-]", TokenType::Negation);
@@ -79,7 +79,7 @@ std::deque<Token> ParseSourceFile(std::ifstream& source_file) {
   Search SemicolonSearch = Search("^(;)", TokenType::Semicolon);
 
   std::vector<Search> non_word_like_search = {
-      OpenBraceSearch, ClosedBraceSearch, ComplimentSearch,     ConstantSearch,  DecrementSearch,
+      OpenBraceSearch, ClosedBraceSearch, ComplementSearch,  ConstantSearch,  DecrementSearch,
       NegationSearch,  OpenParenSearch,   ClosedParenSearch, SemicolonSearch,
   };
 

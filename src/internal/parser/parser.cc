@@ -22,10 +22,33 @@ lexer::Token ExpectToken(std::deque<lexer::Token>* token_list, lexer::TokenType 
 }
 
 Expression ParseExpression(std::deque<lexer::Token>* token_list) {
-  lexer::Token constant_token =
-      ExpectToken(token_list, lexer::TokenType::Constant, "a constant value");
+  lexer::Token next_token = token_list->front();
+  Expression inner_expression;
 
-  return ConstantExpression(constant_token.value);
+  switch (next_token.type) {
+    case lexer::TokenType::Constant:
+      token_list->pop_front();
+      return ConstantExpression(next_token.value);
+    case lexer::TokenType::Complement:
+    case lexer::TokenType::Negation:
+      UnaryOperator unary_op;
+      if (next_token.type == lexer::TokenType::Complement) {
+        unary_op = UnaryOperator::Complement;
+      } else if (next_token.type == lexer::TokenType::Negation) {
+        unary_op = UnaryOperator::Negate;
+      }
+      token_list->pop_front();
+
+      inner_expression = ParseExpression(token_list);
+      return UnaryExpression(unary_op, &inner_expression);
+    case lexer::TokenType::OpenParen:
+      token_list->pop_front();
+      inner_expression = ParseExpression(token_list);
+      ExpectToken(token_list, lexer::TokenType::ClosedParen, ")");
+      return inner_expression;
+    default:
+      throw std::invalid_argument("Found token that can't be handled: " + next_token.to_string());
+  }
 }
 
 Statement ParseStatement(std::deque<lexer::Token>* token_list) {

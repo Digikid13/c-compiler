@@ -22,7 +22,7 @@ enum class TokenType {
   // Non-word-like Tokens
   OpenBrace,
   ClosedBrace,
-  Compliment,
+  Complement,
   Constant,
   Decrement,
   Negation,

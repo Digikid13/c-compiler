@@ -22,6 +22,7 @@ struct Identifier {
 struct ConstantExpression {
   std::string value;
 
+  ConstantExpression() : value("NaN") {}
   explicit ConstantExpression(std::string v) : value(v) {}
 
   std::string to_string() { return "ConstantExpression { value: " + value + " }"; }
@@ -31,6 +32,7 @@ using UnaryExpression = struct UnaryExpression;
 using Expression = std::variant<ConstantExpression, UnaryExpression>;
 
 enum class UnaryOperator {
+  Invalid,
   Complement,
   Negate,
 };
@@ -39,6 +41,7 @@ struct UnaryExpression {
   UnaryOperator op;
   Expression* exp;
 
+  UnaryExpression() : op(UnaryOperator::Invalid), exp(nullptr) {}
   UnaryExpression(UnaryOperator op, Expression* e) : op(op), exp(e) {}
 
   std::string to_string() { return "Unary Expression {}"; }
